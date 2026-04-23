@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firewall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firewall
+  template:
+    metadata:
+      labels:
+        app: firewall
+    spec:
+      containers:
+      - name: firewall
+        image: ishakumarii/firewall:v1
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: firewall
+spec:
+  selector:
+    app: firewall
+  ports:
+    - port: 5000
+      targetPort: 5000
+  type: ClusterIP

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: switch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: switch
+  template:
+    metadata:
+      labels:
+        app: switch
+    spec:
+      containers:
+      - name: switch
+        image: ishakumarii/switch:v2
+        ports:
+        - containerPort: 5001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: switch
+spec:
+  selector:
+    app: switch
+  ports:
+    - port: 5001
+      targetPort: 5001
+  type: NodePort

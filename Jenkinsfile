@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/nfv-devops-project.git'
+                git 'https://github.com/isha-kumarii/nfv-devops-project.git'
             }
         }
 

@@ -1,13 +1,21 @@
 from flask import Flask, request, jsonify
 from datetime import datetime
+import requests
+import time
 
 app = Flask(__name__)
 
+# Local storage (for testing /logs endpoint)
 logs = []
+
+# Elasticsearch service (Docker network)
+ELASTIC_URL = "http://elasticsearch:9200/logs/_doc"
+
 
 @app.route("/")
 def home():
     return "Monitor Service Running"
+
 
 @app.route("/log", methods=["POST"])
 def log_request():
@@ -20,9 +28,21 @@ def log_request():
         "timestamp": datetime.now().isoformat()
     }
 
+    # ✅ Save locally
     logs.append(entry)
 
-    print("LOG:", entry)
+    # ✅ Send to Elasticsearch (with retry + headers)
+    headers = {"Content-Type": "application/json"}
+
+    for i in range(3):
+        try:
+            res = requests.post(ELASTIC_URL, json=entry, headers=headers)
+            print("Elasticsearch status:", res.status_code)
+            print("Elasticsearch response:", res.text)
+            break
+        except Exception as e:
+            print("Retrying Elasticsearch...", e)
+            time.sleep(2)
 
     return jsonify({"status": "logged"}), 200
 

@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-FIREWALL_URL = "http://localhost:5000/check"
-MONITOR_URL = "http://localhost:5002/log"
+FIREWALL_URL = "http://firewall:5000/check"
+MONITOR_URL = "http://monitor:5002/log"
 
 @app.route("/")
 def home():

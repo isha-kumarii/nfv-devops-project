@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 FIREWALL_URL = "http://firewall:5000/check"
 MONITOR_URL = "http://monitor:5002/log"
-
+print("CI/CD test")
 @app.route("/")
 def home():
     return "Switch Service Running"

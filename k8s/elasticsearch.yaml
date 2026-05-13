@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elasticsearch
+  namespace: nfv-system
+  labels:
+    app: elasticsearch
+    tier: storage
 spec:
   replicas: 1
   selector:
@@ -11,6 +15,7 @@ spec:
     metadata:
       labels:
         app: elasticsearch
+        tier: storage
     spec:
       containers:
       - name: elasticsearch
@@ -24,11 +29,22 @@ spec:
           value: "false"
         - name: ES_JAVA_OPTS
           value: "-Xms512m -Xmx512m"
+        volumeMounts:
+        - name: elasticsearch-storage
+          mountPath: /usr/share/elasticsearch/data
+
+      volumes:
+      - name: elasticsearch-storage
+        persistentVolumeClaim:
+          claimName: elasticsearch-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: elasticsearch
+  namespace: nfv-system
+  labels:
+    app: elasticsearch
 spec:
   selector:
     app: elasticsearch

@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     environment {
@@ -8,7 +9,9 @@ pipeline {
     stages {
 
         stage('Build Images') {
+
             steps {
+
                 sh '''
                 docker build -t $DOCKER_USER/firewall:v1 ./firewall-service
                 docker build -t $DOCKER_USER/switch:v2 ./switch-service
@@ -18,7 +21,9 @@ pipeline {
         }
 
         stage('Push Images') {
+
             steps {
+
                 sh '''
                 docker push $DOCKER_USER/firewall:v1
                 docker push $DOCKER_USER/switch:v2
@@ -28,10 +33,23 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+
             steps {
+
+                sh 'chmod +x deploy.sh'
                 sh './deploy.sh'
             }
         }
+    }
 
+    post {
+
+        success {
+            echo 'Deployment Successful'
+        }
+
+        failure {
+            echo 'Pipeline Failed'
+        }
     }
 }

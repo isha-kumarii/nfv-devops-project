@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: firewall
+  namespace: nfv-system
+  labels: 
+    app: firewall
+    tier: security 
 spec:
   replicas: 1
   selector:
@@ -11,10 +15,12 @@ spec:
     metadata:
       labels:
         app: firewall
+        tier: security
     spec:
       containers:
       - name: firewall
         image: ishakumarii/firewall:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
 ---
@@ -22,6 +28,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: firewall
+  namespace: nfv-system
+  labels:
+    app: firewall
 spec:
   selector:
     app: firewall

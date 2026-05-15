@@ -8,7 +8,7 @@ allowed_requests = Counter(
     'allowed_requests_total',
     'Total allowed requests'
 )
-# testing webhook
+
 blocked_requests = Counter(
     'blocked_requests_total',
     'Total blocked requests'

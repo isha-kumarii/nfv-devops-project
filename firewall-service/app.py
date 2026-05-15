@@ -13,7 +13,7 @@ blocked_requests = Counter(
     'blocked_requests_total',
     'Total blocked requests'
 )
-
+#Testing CI/CD
 # Firewall rules
 BLOCKED_IPS = ["192.168.1.10", "10.0.0.1"]
 
